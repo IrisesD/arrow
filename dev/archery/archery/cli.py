@@ -210,6 +210,7 @@ def _apply_options(cmd, options):
               help="Delete existing build directory if found.")
 @click.option("--targets", type=str, multiple=True,
               help="Generator targets to run. Can be stacked.")
+
 @click.argument("build_dir", type=build_dir_type)
 @click.pass_context
 def build(ctx, src, build_dir, force, targets, **kwargs):
@@ -767,6 +768,7 @@ def _set_default(opt, default):
 @click.option('-k', '--match',
               help=("Substring for test names to include in run, "
                     "e.g. -k primitive"))
+@click.option('--static', is_flag=True, default=False, help="run static tests only.")
 def integration(with_all=False, random_seed=12345, **args):
     from .integration.runner import write_js_test_json, run_all_tests
     import numpy as np

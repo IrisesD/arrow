@@ -545,7 +545,7 @@ def run_all_tests(with_cpp=True, with_java=True, with_js=True,
                   with_nanoarrow=False, run_ipc=False, run_flight=False,
                   run_c_data=False, tempdir=None, **kwargs):
     tempdir = tempdir or tempfile.mkdtemp(prefix='arrow-integration-')
-
+    
     testers: List[Tester] = []
 
     if with_cpp:
@@ -571,7 +571,11 @@ def run_all_tests(with_cpp=True, with_java=True, with_js=True,
 
     static_json_files = get_static_json_files()
     generated_json_files = datagen.get_generated_json_files(tempdir=tempdir)
-    json_files = static_json_files + generated_json_files
+    
+    json_files = static_json_files
+    # get static in kwargs
+    if kwargs.get('static') == False:
+        json_files = json_files + generated_json_files
 
     # Additional integration test cases for Arrow Flight.
     flight_scenarios = [
