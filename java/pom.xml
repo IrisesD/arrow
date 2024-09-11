@@ -116,6 +116,7 @@ under the License.
     <additionalparam>-Xdoclint:none</additionalparam>
     <!-- List of add-opens arg line arguments for tests -->
     <surefire.add-opens.argLine>--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED</surefire.add-opens.argLine>
+    <surefire.add-reads.argLine>--add-reads=org.apache.arrow.flight.core,ALL-UNNAMED</surefire.add-reads.argLine>
     <!-- org.apache:apache overrides -->
     <minimalJavaBuildVersion>11</minimalJavaBuildVersion>
     <maven.compiler.source>11</maven.compiler.source>
