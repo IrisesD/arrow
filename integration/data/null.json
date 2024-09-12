@@ -1,0 +1,51 @@
+{
+  "schema": {
+    "fields": [
+      {
+        "name": "f1",
+        "type": {
+          "name": "int",
+          "isSigned": true,
+          "bitWidth": 32
+        },
+        "nullable": true,
+        "children": []
+      }
+    ]
+  },
+  "batches": [
+    {
+      "count": 10,
+      "columns": [
+        {
+          "name": "f1",
+          "count": 10,
+          "VALIDITY": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "DATA": [
+            4,
+            6,
+            8,
+            2,
+            5,
+            5,
+            1,
+            9,
+            10,
+            15
+          ]
+        }
+      ]
+    }
+  ]
+}

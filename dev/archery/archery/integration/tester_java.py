@@ -52,6 +52,7 @@ _JAVA_OPTS = [
 ]
 
 _arrow_version = load_version_from_pom()
+
 _ARROW_TOOLS_JAR = os.environ.get(
     "ARROW_JAVA_INTEGRATION_JAR",
     os.path.join(
@@ -60,6 +61,18 @@ _ARROW_TOOLS_JAR = os.environ.get(
         f"arrow-tools-{_arrow_version}-jar-with-dependencies.jar"
     )
 )
+print("Tools jar:", _ARROW_TOOLS_JAR)
+
+_ARROW_ALGORITHM_JAR = os.environ.get(
+    "ARROW_ALGORITHM_JAVA_INTEGRATION_JAR",
+    os.path.join(
+        ARROW_BUILD_ROOT,
+        "java/algorithm/target",
+        f"arrow-algorithm-{_arrow_version}.jar"
+    )
+)
+print("Algorithm jar:", _ARROW_ALGORITHM_JAR)
+
 _ARROW_C_DATA_JAR = os.environ.get(
     "ARROW_C_DATA_JAVA_INTEGRATION_JAR",
     os.path.join(
@@ -87,7 +100,7 @@ _ARROW_FLIGHT_CLIENT = (
 @functools.lru_cache
 def setup_jpype():
     import jpype
-    jar_path = f"{_ARROW_TOOLS_JAR}:{_ARROW_C_DATA_JAR}"
+    jar_path = f"{_ARROW_TOOLS_JAR}:{_ARROW_C_DATA_JAR}:{_ARROW_ALGORITHM_JAR}"
     # XXX Didn't manage to tone down the logging level here (DEBUG -> INFO)
     jpype.startJVM(jpype.getDefaultJVMPath(),
                    "-Djava.class.path=" + jar_path,
@@ -242,10 +255,21 @@ class JavaTester(Tester):
     name = 'Java'
 
     def __init__(self, *args, **kwargs):
+        import jpype
         super().__init__(*args, **kwargs)
         self._java_opts = _JAVA_OPTS[:]
         self._java_opts.append(
             '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED')
+        setup_jpype()
+        # JPype pointers to java.io, org.apache.arrow...
+        self.java_io = jpype.JPackage("java").io
+        self.java_arrow = jpype.JPackage("org").apache.arrow
+        self.arrow_sort = jpype.JPackage("org").apache.arrow.algorithm.sort
+        self.java_allocator = self._make_java_allocator()
+    
+    def _make_java_allocator(self):
+        # Return a new allocator
+        return self.java_arrow.memory.RootAllocator()
 
     def _run(self, arrow_path=None, json_path=None, command='VALIDATE'):
         cmd = (
@@ -253,6 +277,15 @@ class JavaTester(Tester):
             self._java_opts +
             ['-cp', _ARROW_TOOLS_JAR, 'org.apache.arrow.tools.Integration']
         )
+        
+        json_file = self.java_io.File(json_path)
+        with self.java_arrow.vector.ipc.JsonFileReader(
+                json_file, self.java_allocator) as json_reader:
+            json_reader.start()
+            temp = json_reader.read().getVector("f1")
+            compar = self.arrow_sort.VectorValueComparator.createNew()
+            self.arrow_sort.FixedWidthInPlaceVectorSorter.sortInPlace(temp, compar)
+            print(temp)
 
         if arrow_path is not None:
             cmd.extend(['-a', arrow_path])
