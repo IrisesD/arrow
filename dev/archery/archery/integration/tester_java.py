@@ -283,8 +283,9 @@ class JavaTester(Tester):
                 json_file, self.java_allocator) as json_reader:
             json_reader.start()
             temp = json_reader.read().getVector("f1")
-            compar = self.arrow_sort.VectorValueComparator.createNew()
-            self.arrow_sort.FixedWidthInPlaceVectorSorter.sortInPlace(temp, compar)
+            sorter = self.arrow_sort.FixedWidthInPlaceVectorSorter()
+            comparator = self.arrow_sort.DefaultVectorComparators.createDefaultComparator(temp);
+            sorter.sortInPlace(temp, comparator);
             print(temp)
 
         if arrow_path is not None:
