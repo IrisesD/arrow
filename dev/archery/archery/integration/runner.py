@@ -61,7 +61,7 @@ class IntegrationRunner(object):
                  flight_scenarios: List[Scenario],
                  testers: List[Tester], tempdir=None,
                  debug=False, stop_on_error=True, gold_dirs=None,
-                 serial=False, match=None, **unused_kwargs):
+                 serial=False, match=None, apitest=False, **unused_kwargs):
         self.json_files = json_files
         self.flight_scenarios = flight_scenarios
         self.testers = testers
@@ -73,7 +73,8 @@ class IntegrationRunner(object):
         self.failures: List[Outcome] = []
         self.skips: List[Outcome] = []
         self.match = match
-
+        self.apitest = apitest
+        
         if self.match is not None:
             print("-- Only running tests with {} in their name"
                   .format(self.match))
@@ -314,6 +315,10 @@ class IntegrationRunner(object):
         producer.file_to_stream(producer_file_path, producer_stream_path)
         consumer.stream_to_file(producer_stream_path, consumer_file_path)
         consumer.validate(json_path, consumer_file_path)
+        
+        if self.apitest:
+            if producer.name == 'Java' and consumer.name == 'Java':
+                consumer.check_equal(producer.run_api(json_path), consumer.run_api(json_path))
 
     def _run_gold(self,
                   gold_dir: str,

@@ -61,7 +61,6 @@ _ARROW_TOOLS_JAR = os.environ.get(
         f"arrow-tools-{_arrow_version}-jar-with-dependencies.jar"
     )
 )
-print("Tools jar:", _ARROW_TOOLS_JAR)
 
 _ARROW_ALGORITHM_JAR = os.environ.get(
     "ARROW_ALGORITHM_JAVA_INTEGRATION_JAR",
@@ -71,7 +70,6 @@ _ARROW_ALGORITHM_JAR = os.environ.get(
         f"arrow-algorithm-{_arrow_version}.jar"
     )
 )
-print("Algorithm jar:", _ARROW_ALGORITHM_JAR)
 
 _ARROW_C_DATA_JAR = os.environ.get(
     "ARROW_C_DATA_JAVA_INTEGRATION_JAR",
@@ -277,16 +275,6 @@ class JavaTester(Tester):
             self._java_opts +
             ['-cp', _ARROW_TOOLS_JAR, 'org.apache.arrow.tools.Integration']
         )
-        
-        json_file = self.java_io.File(json_path)
-        with self.java_arrow.vector.ipc.JsonFileReader(
-                json_file, self.java_allocator) as json_reader:
-            json_reader.start()
-            temp = json_reader.read().getVector("f1")
-            sorter = self.arrow_sort.FixedWidthInPlaceVectorSorter()
-            comparator = self.arrow_sort.DefaultVectorComparators.createDefaultComparator(temp);
-            sorter.sortInPlace(temp, comparator);
-            print(temp)
 
         if arrow_path is not None:
             cmd.extend(['-a', arrow_path])
@@ -303,7 +291,28 @@ class JavaTester(Tester):
 
     def validate(self, json_path, arrow_path, quirks=None):
         return self._run(arrow_path, json_path, 'VALIDATE')
+    
+    def run_api(self, json_path, api_name='sort'): # now is an example for a sort api
+        json_file = self.java_io.File(json_path)
+        with self.java_arrow.vector.ipc.JsonFileReader(
+                json_file, self.java_allocator) as json_reader:
+            json_reader.start()
+            result = json_reader.read().getVector("f1")
+            sorter = self.arrow_sort.FixedWidthInPlaceVectorSorter()
+            comparator = self.arrow_sort.DefaultVectorComparators.createDefaultComparator(result)
+            sorter.sortInPlace(result, comparator);
+            # print(temp)
+        return result
 
+    def check_equal(self, result1, result2, type="FieldVector"):
+        if type == "FieldVector":
+            self.java_arrow.vector.util.Validator.compareFieldVectors(result1, result2)
+        elif type == "Schema":
+            self.java_arrow.vector.util.Validator.compareSchemas(result1, result2)
+        else:
+            raise ValueError("Invalid type")
+        
+     
     def json_to_file(self, json_path, arrow_path):
         return self._run(arrow_path, json_path, 'JSON_TO_ARROW')
 
