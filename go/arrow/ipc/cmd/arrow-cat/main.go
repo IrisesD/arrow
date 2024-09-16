@@ -65,6 +65,7 @@ import (
 
 	"github.com/apache/arrow/go/v18/arrow/ipc"
 	"github.com/apache/arrow/go/v18/arrow/memory"
+	"github.com/apache/arrow/go/v18/arrow/array"
 )
 
 func main() {
@@ -161,6 +162,7 @@ func processFile(w io.Writer, fname string) error {
 
 		for i, col := range rec.Columns() {
 			fmt.Fprintf(w, "  col[%d] %q: %v\n", i, rec.ColumnName(i), col)
+			fmt.Fprintf(w, "  %d\n", col.(*array.Int64).Len())
 		}
 	}
 

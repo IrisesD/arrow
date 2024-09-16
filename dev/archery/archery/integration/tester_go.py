@@ -34,6 +34,7 @@ _GOBIN = os.environ.get("GOBIN", os.path.join(_GOPATH, "bin"))
 _GO_INTEGRATION_EXE = os.path.join(_GOBIN, "arrow-json-integration-test")
 _STREAM_TO_FILE = os.path.join(_GOBIN, "arrow-stream-to-file")
 _FILE_TO_STREAM = os.path.join(_GOBIN, "arrow-file-to-stream")
+_CAT_ARROW_FILE = os.path.join(_GOBIN, "arrow-cat")
 
 _FLIGHT_SERVER_CMD = [os.path.join(_GOBIN, "arrow-flight-integration-server")]
 _FLIGHT_CLIENT_CMD = [
@@ -59,6 +60,10 @@ class GoTester(Tester):
     C_DATA_ARRAY_IMPORTER = True
 
     name = 'Go'
+    
+    def cat_arrow_file(self, arrow_path):
+        cmd = [_CAT_ARROW_FILE, arrow_path]
+        self.run_shell_command(cmd)
 
     def _run(self, arrow_path=None, json_path=None, command='VALIDATE'):
         cmd = [_GO_INTEGRATION_EXE]
@@ -75,6 +80,8 @@ class GoTester(Tester):
             log(' '.join(cmd))
 
         run_cmd(cmd)
+        
+        self.cat_arrow_file(arrow_path)
 
     def validate(self, json_path, arrow_path, quirks=None):
         return self._run(arrow_path, json_path, 'VALIDATE')
