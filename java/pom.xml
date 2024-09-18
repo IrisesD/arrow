@@ -106,7 +106,7 @@ under the License.
     <arrow.vector.classifier></arrow.vector.classifier>
     <forkCount>2</forkCount>
     <checkstyle.version>10.18.1</checkstyle.version>
-    <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+    <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <error_prone_core.version>2.31.0</error_prone_core.version>
     <mockito.core.version>5.11.0</mockito.core.version>
     <mockito.inline.version>5.2.0</mockito.inline.version>

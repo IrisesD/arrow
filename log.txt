@@ -1,0 +1,581 @@
+##########################################################
+IPC: Java producing, Java consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/d75d57d4_null.json_as_file', '-j', '/home/iris/tmp/d75d57d4_null.json_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 321, in _produce_consume
+    producer.run_api(producer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/d75d57d4_null.json_as_file -j /home/iris/tmp/d75d57d4_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/d75d57d4_null.json_as_file
+
+--------------
+
+======================================================================
+##########################################################
+IPC: Java producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/eed39ada_null.json_as_file', '-j', '/home/iris/tmp/eed39ada_null.json_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 321, in _produce_consume
+    producer.run_api(producer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/eed39ada_null.json_as_file -j /home/iris/tmp/eed39ada_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/eed39ada_null.json_as_file
+
+--------------
+
+======================================================================
+version: V5
+record 1/1...
+##########################################################
+IPC: Go producing, Java consuming
+##########################################################
+producer_file_path: /home/iris/tmp/0897dfa6_null.json_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/0897dfa6_null.consumer_stream_as_file', '-j', '/home/iris/tmp/0897dfa6_null.consumer_stream_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 323, in _produce_consume
+    consumer.run_api(consumer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/0897dfa6_null.consumer_stream_as_file -j /home/iris/tmp/0897dfa6_null.consumer_stream_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/0897dfa6_null.consumer_stream_as_file
+
+--------------
+
+======================================================================
+version: V5
+record 1/1...
+version: V5
+record 1/1...
+##########################################################
+IPC: Go producing, Go consuming
+##########################################################
+producer_file_path: /home/iris/tmp/22161e0e_null.json_as_file
+consumer_file_path: /home/iris/tmp/22161e0e_null.consumer_stream_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+
+
+################# FAILURES #################
+FAILED TEST: null.json Java producing,  Java consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/d75d57d4_null.json_as_file -j /home/iris/tmp/d75d57d4_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/d75d57d4_null.json_as_file
+
+--------------
+
+
+FAILED TEST: null.json Java producing,  Go consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/eed39ada_null.json_as_file -j /home/iris/tmp/eed39ada_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/eed39ada_null.json_as_file
+
+--------------
+
+
+FAILED TEST: null.json Go producing,  Java consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/0897dfa6_null.consumer_stream_as_file -j /home/iris/tmp/0897dfa6_null.consumer_stream_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/0897dfa6_null.consumer_stream_as_file
+
+--------------
+
+
+3 failures, 0 skips
+##########################################################
+IPC: Java producing, Java consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/5ec0afe0_null.json_as_file', '-j', '/home/iris/tmp/5ec0afe0_null.json_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 321, in _produce_consume
+    producer.run_api(producer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/5ec0afe0_null.json_as_file -j /home/iris/tmp/5ec0afe0_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/5ec0afe0_null.json_as_file
+
+--------------
+
+======================================================================
+##########################################################
+IPC: Java producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/0d647678_null.json_as_file', '-j', '/home/iris/tmp/0d647678_null.json_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 321, in _produce_consume
+    producer.run_api(producer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/0d647678_null.json_as_file -j /home/iris/tmp/0d647678_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/0d647678_null.json_as_file
+
+--------------
+
+======================================================================
+version: V5
+record 1/1...
+##########################################################
+IPC: Go producing, Java consuming
+##########################################################
+producer_file_path: /home/iris/tmp/4187cfc8_null.json_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/4187cfc8_null.consumer_stream_as_file', '-j', '/home/iris/tmp/4187cfc8_null.consumer_stream_as_file', '-c', 'ARROW_API']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 323, in _produce_consume
+    consumer.run_api(consumer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 295, in run_api
+    self._run(arrow_path, arrow_path, 'ARROW_API')
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/4187cfc8_null.consumer_stream_as_file -j /home/iris/tmp/4187cfc8_null.consumer_stream_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/4187cfc8_null.consumer_stream_as_file
+
+--------------
+
+======================================================================
+version: V5
+record 1/1...
+version: V5
+record 1/1...
+##########################################################
+IPC: Go producing, Go consuming
+##########################################################
+producer_file_path: /home/iris/tmp/0fd696a9_null.json_as_file
+consumer_file_path: /home/iris/tmp/0fd696a9_null.consumer_stream_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+
+
+################# FAILURES #################
+FAILED TEST: null.json Java producing,  Java consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/5ec0afe0_null.json_as_file -j /home/iris/tmp/5ec0afe0_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/5ec0afe0_null.json_as_file
+
+--------------
+
+
+FAILED TEST: null.json Java producing,  Go consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/0d647678_null.json_as_file -j /home/iris/tmp/0d647678_null.json_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/0d647678_null.json_as_file
+
+--------------
+
+
+FAILED TEST: null.json Go producing,  Java consuming
+<class 'RuntimeError'>: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/4187cfc8_null.consumer_stream_as_file -j /home/iris/tmp/4187cfc8_null.consumer_stream_as_file -c ARROW_API
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+Incompatible files
+json file already exists: /home/iris/tmp/4187cfc8_null.consumer_stream_as_file
+
+--------------
+
+
+3 failures, 0 skips
+##########################################################
+IPC: Java producing, Java consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+##########################################################
+IPC: Java producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+version: V5
+record 1/1...
+##########################################################
+IPC: Go producing, Java consuming
+##########################################################
+producer_file_path: /home/iris/tmp/2b67a7d7_null.json_as_file
+consumer_file_path: /home/iris/tmp/2b67a7d7_null.consumer_stream_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 326, in _produce_consume
+    consumer.check_equal(producer_file_path, consumer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 299, in check_equal
+    self.run_shell_command(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester.py", line 233, in run_shell_command
+    subprocess.check_call(cmd, **kwargs)
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 413, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'diff -u /home/iris/tmp/2b67a7d7_null.json_as_file_modified /home/iris/tmp/2b67a7d7_null.consumer_stream_as_file_modified' returned non-zero exit status 2.
+======================================================================
+##########################################################
+IPC: Go producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+
+
+################# FAILURES #################
+FAILED TEST: null.json Go producing,  Java consuming
+<class 'subprocess.CalledProcessError'>: Command 'diff -u /home/iris/tmp/2b67a7d7_null.json_as_file_modified /home/iris/tmp/2b67a7d7_null.consumer_stream_as_file_modified' returned non-zero exit status 2.
+
+1 failures, 0 skips
+##########################################################
+IPC: Java producing, Java consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+##########################################################
+IPC: Java producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+version: V5
+record 1/1...
+Binary files /home/iris/tmp/f1d26509_null.json_as_file_modified and /home/iris/tmp/f1d26509_null.consumer_stream_as_file_modified differ
+##########################################################
+IPC: Go producing, Java consuming
+##########################################################
+producer_file_path: /home/iris/tmp/f1d26509_null.json_as_file
+consumer_file_path: /home/iris/tmp/f1d26509_null.consumer_stream_as_file
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 326, in _produce_consume
+    consumer.check_equal(producer_file_path, consumer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 299, in check_equal
+    self.run_shell_command(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester.py", line 233, in run_shell_command
+    subprocess.check_call(cmd, **kwargs)
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 413, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'diff -u /home/iris/tmp/f1d26509_null.json_as_file_modified /home/iris/tmp/f1d26509_null.consumer_stream_as_file_modified' returned non-zero exit status 1.
+======================================================================
+##########################################################
+IPC: Go producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+
+
+################# FAILURES #################
+FAILED TEST: null.json Go producing,  Java consuming
+<class 'subprocess.CalledProcessError'>: Command 'diff -u /home/iris/tmp/f1d26509_null.json_as_file_modified /home/iris/tmp/f1d26509_null.consumer_stream_as_file_modified' returned non-zero exit status 1.
+
+1 failures, 0 skips
+##########################################################
+IPC: Java producing, Java consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+-- Validating file
+-- Validating stream
+======================================================================
+##########################################################
+IPC: Java producing, Go consuming
+##########################################################
+======================================================================
+Testing file /home/iris/arrow/integration/data/null.json
+-- Creating binary inputs
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 136, in run_cmd
+    output = subprocess.check_output(cmd, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/miniconda3/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['java', '-Dio.netty.tryReflectionSetAccessible=true', '-Darrow.struct.conflict.policy=CONFLICT_APPEND', '--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED', '-XX:-UsePerfData', '--add-reads=org.apache.arrow.flight.core=ALL-UNNAMED', '-cp', '/home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar', 'org.apache.arrow.tools.Integration', '-a', '/home/iris/tmp/888ccea0_null.json_as_file', '-j', '/home/iris/arrow/integration/data/null.json', '-c', 'JSON_TO_ARROW']' returned non-zero exit status 130.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 275, in _run_ipc_test_case
+    run_binaries(producer, consumer, test_case)
+  File "/home/iris/arrow/dev/archery/archery/integration/runner.py", line 309, in _produce_consume
+    producer.json_to_file(json_path, producer_file_path)
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 302, in json_to_file
+    return self._run(arrow_path, json_path, 'JSON_TO_ARROW')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iris/arrow/dev/archery/archery/integration/tester_java.py", line 289, in _run
+    run_cmd(cmd)
+  File "/home/iris/arrow/dev/archery/archery/integration/util.py", line 145, in run_cmd
+    raise RuntimeError(sio.getvalue())
+RuntimeError: Command failed: java -Dio.netty.tryReflectionSetAccessible=true -Darrow.struct.conflict.policy=CONFLICT_APPEND --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED -XX:-UsePerfData --add-reads=org.apache.arrow.flight.core=ALL-UNNAMED -cp /home/iris/arrow/java/tools/target/arrow-tools-18.0.0-SNAPSHOT-jar-with-dependencies.jar org.apache.arrow.tools.Integration -a /home/iris/tmp/888ccea0_null.json_as_file -j /home/iris/arrow/integration/data/null.json -c JSON_TO_ARROW
+With output:
+--------------
+WARNING: Unknown module: org.apache.arrow.flight.core specified to --add-reads
+WARNING: Unknown module: org.apache.arrow.memory.core specified to --add-opens
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+
+--------------
+
+======================================================================

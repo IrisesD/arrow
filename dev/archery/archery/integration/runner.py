@@ -1,7 +1,8 @@
 # licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
-# regarding copyright ownership.  The ASF licenses this file
+# regarding copyright ownership.  The ASF licenses this 
+
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
@@ -317,8 +318,14 @@ class IntegrationRunner(object):
         consumer.validate(json_path, consumer_file_path)
         
         if self.apitest:
-            if producer.name == 'Java' and consumer.name == 'Java':
-                consumer.check_equal(producer.run_api(json_path), consumer.run_api(json_path))
+            if producer.name == 'Go' and consumer.name == 'Java':
+                producer.run_api(producer_file_path)
+                consumer.run_api(consumer_file_path)
+                print("Cat Producer File:")
+                producer.cat_file(producer_file_path+"_modified")
+                print("Cat Consumer File:")
+                producer.cat_file(consumer_file_path+"_modified")
+                consumer.check_equal(producer_file_path, consumer_file_path)
 
     def _run_gold(self,
                   gold_dir: str,
@@ -550,7 +557,6 @@ def run_all_tests(with_cpp=True, with_java=True, with_js=True,
                   with_nanoarrow=False, run_ipc=False, run_flight=False,
                   run_c_data=False, tempdir=None, **kwargs):
     tempdir = tempdir or tempfile.mkdtemp(prefix='arrow-integration-')
-    
     testers: List[Tester] = []
 
     if with_cpp:
@@ -658,7 +664,7 @@ def run_all_tests(with_cpp=True, with_java=True, with_js=True,
         ),
     ]
 
-    runner = IntegrationRunner(json_files, flight_scenarios, testers, **kwargs)
+    runner = IntegrationRunner(json_files, flight_scenarios, testers, **kwargs, tempdir=tempdir)
     if run_ipc:
         runner.run_ipc()
     if run_flight:

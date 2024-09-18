@@ -65,6 +65,7 @@ import (
 
 	"github.com/apache/arrow/go/v18/arrow/ipc"
 	"github.com/apache/arrow/go/v18/arrow/memory"
+	"github.com/apache/arrow/go/v18/arrow/array"
 )
 
 func main() {
@@ -121,7 +122,6 @@ func processFiles(w io.Writer, names []string) error {
 }
 
 func processFile(w io.Writer, fname string) error {
-
 	f, err := os.Open(fname)
 	if err != nil {
 		return err
@@ -151,6 +151,11 @@ func processFile(w io.Writer, fname string) error {
 	}
 	defer r.Close()
 
+	writeFile, err2 := os.OpenFile(fname+"_modified",os.O_RDWR|os.O_TRUNC|os.O_CREATE,0666)
+	if err2 != nil {
+		return err2
+	}
+	defer writeFile.Close()
 	fmt.Fprintf(w, "version: %v\n", r.Version())
 	for i := 0; i < r.NumRecords(); i++ {
 		fmt.Fprintf(w, "record %d/%d...\n", i+1, r.NumRecords())
@@ -158,10 +163,16 @@ func processFile(w io.Writer, fname string) error {
 		if err != nil {
 			return err
 		}
-
-		for i, col := range rec.Columns() {
-			fmt.Fprintf(w, "  col[%d] %q: %v\n", i, rec.ColumnName(i), col)
+		// set rec.Column(0) to [0,1,2,3,4,5,6,7,8,9]
+		intbuild := array.NewInt64Builder(mem)
+		intbuild.AppendValues([]int64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, []bool{true, true, true, true, true, true, true, true, true, true})
+		rec, _ = rec.SetColumn(0, intbuild.NewArray())
+		w1, err1 := ipc.NewFileWriter(writeFile, ipc.WithSchema(rec.Schema()), ipc.WithAllocator(mem))
+		if err1 != nil {
+			return err1
 		}
+		defer w1.Close()
+		w1.Write(rec)
 	}
 
 	return nil

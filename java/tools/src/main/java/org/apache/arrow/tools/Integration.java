@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.arrow.compression.CommonsCompressionFactory;
 import org.apache.arrow.memory.BufferAllocator;
 import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.ipc.ArrowFileReader;
 import org.apache.arrow.vector.ipc.ArrowFileWriter;
@@ -127,6 +128,46 @@ public class Integration {
 
   /** Commands (actions) the application can perform. */
   enum Command {
+    ARROW_API(true, false) {
+      @Override
+      public void execute(File arrowFile, File jsonFile) throws IOException {
+        try (BufferAllocator allocator = new RootAllocator(Integer.MAX_VALUE);
+            FileInputStream fileInputStream = new FileInputStream(arrowFile);
+            ArrowFileReader arrowReader =
+                new ArrowFileReader(fileInputStream.getChannel(), allocator)) {
+          VectorSchemaRoot root = arrowReader.getVectorSchemaRoot();
+          Schema schema = root.getSchema();
+          LOGGER.debug("Input file size: " + arrowFile.length());
+          LOGGER.debug("Found schema: " + schema);
+          for (ArrowBlock rbBlock : arrowReader.getRecordBlocks()) {
+            if (!arrowReader.loadRecordBatch(rbBlock)) {
+              throw new IOException("Expected to load record batch");
+            }
+            // set column 0 of each record batch to [0,1,2,3,4,5,6,7,8,9]
+            BufferAllocator allocator1 = new RootAllocator(Integer.MAX_VALUE);
+            IntVector intVector = new IntVector("f1", allocator1);
+            intVector.allocateNew(10);
+            intVector.setValueCount(10);
+            for (int i = 0; i < 10; i++) {
+              intVector.set(i, i);
+            }
+            root = root.addVector(0, intVector);
+            root = root.removeVector(1);
+            root.setRowCount(10);
+          }
+          // write to arrow_path+"_modified"
+          String modifiedArrowFileName = arrowFile.getName() + "_modified";
+          File modifiedArrowFile = new File(arrowFile.getParent(), modifiedArrowFileName);
+          try (FileOutputStream fileOutputStream = new FileOutputStream(modifiedArrowFile);
+              ArrowFileWriter arrowWriter =
+                  new ArrowFileWriter(root, arrowReader, fileOutputStream.getChannel())) {
+            arrowWriter.start();
+            arrowWriter.writeBatch();
+            arrowWriter.end();
+          }
+        }
+      }
+    },
     ARROW_TO_JSON(true, false) {
       @Override
       public void execute(File arrowFile, File jsonFile) throws IOException {

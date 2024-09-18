@@ -34,7 +34,8 @@ _GOBIN = os.environ.get("GOBIN", os.path.join(_GOPATH, "bin"))
 _GO_INTEGRATION_EXE = os.path.join(_GOBIN, "arrow-json-integration-test")
 _STREAM_TO_FILE = os.path.join(_GOBIN, "arrow-stream-to-file")
 _FILE_TO_STREAM = os.path.join(_GOBIN, "arrow-file-to-stream")
-_CAT_ARROW_FILE = os.path.join(_GOBIN, "arrow-cat")
+_SUM_ARRAY = os.path.join(_GOBIN, "arrow-sum")
+_CAT_FILE = os.path.join(_GOBIN, "arrow-cat")
 
 _FLIGHT_SERVER_CMD = [os.path.join(_GOBIN, "arrow-flight-integration-server")]
 _FLIGHT_CLIENT_CMD = [
@@ -61,8 +62,12 @@ class GoTester(Tester):
 
     name = 'Go'
     
-    def cat_arrow_file(self, arrow_path):
-        cmd = [_CAT_ARROW_FILE, arrow_path]
+    def sum_array(self, arrow_path):
+        cmd = [_SUM_ARRAY, arrow_path]
+        self.run_shell_command(cmd)
+        
+    def cat_file(self, arrow_path):
+        cmd = [_CAT_FILE, arrow_path ,'>', arrow_path+"cat"]
         self.run_shell_command(cmd)
 
     def _run(self, arrow_path=None, json_path=None, command='VALIDATE'):
@@ -81,7 +86,8 @@ class GoTester(Tester):
 
         run_cmd(cmd)
         
-        self.cat_arrow_file(arrow_path)
+    def run_api(self, arrow_path):
+        self.sum_array(arrow_path)
 
     def validate(self, json_path, arrow_path, quirks=None):
         return self._run(arrow_path, json_path, 'VALIDATE')
@@ -95,6 +101,10 @@ class GoTester(Tester):
 
     def file_to_stream(self, file_path, stream_path):
         cmd = [_FILE_TO_STREAM, file_path, '>', stream_path]
+        self.run_shell_command(cmd)
+        
+    def check_equal(self, arrow_path1, arrow_path2):
+        cmd = ['diff', '-u', arrow_path1+"_modifiedcat", arrow_path2+"_modifiedcat"]
         self.run_shell_command(cmd)
 
     @contextlib.contextmanager

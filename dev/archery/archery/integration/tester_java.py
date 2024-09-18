@@ -25,7 +25,6 @@ from . import cdata
 from .tester import Tester, CDataExporter, CDataImporter
 from .util import run_cmd, log
 
-
 ARROW_BUILD_ROOT = os.environ.get(
     'ARROW_BUILD_ROOT',
     Path(__file__).resolve().parents[4]
@@ -292,27 +291,13 @@ class JavaTester(Tester):
     def validate(self, json_path, arrow_path, quirks=None):
         return self._run(arrow_path, json_path, 'VALIDATE')
     
-    def run_api(self, json_path, api_name='sort'): # now is an example for a sort api
-        json_file = self.java_io.File(json_path)
-        with self.java_arrow.vector.ipc.JsonFileReader(
-                json_file, self.java_allocator) as json_reader:
-            json_reader.start()
-            result = json_reader.read().getVector("f1")
-            sorter = self.arrow_sort.FixedWidthInPlaceVectorSorter()
-            comparator = self.arrow_sort.DefaultVectorComparators.createDefaultComparator(result)
-            sorter.sortInPlace(result, comparator);
-            # print(temp)
-        return result
+    def run_api(self, arrow_path):
+        return self._run(arrow_path, arrow_path+"_modified", 'ARROW_API')
 
-    def check_equal(self, result1, result2, type="FieldVector"):
-        if type == "FieldVector":
-            self.java_arrow.vector.util.Validator.compareFieldVectors(result1, result2)
-        elif type == "Schema":
-            self.java_arrow.vector.util.Validator.compareSchemas(result1, result2)
-        else:
-            raise ValueError("Invalid type")
+    def check_equal(self, arrow_path1, arrow_path2):
+        cmd = ['diff', '-u', arrow_path1+"_modifiedcat", arrow_path2+"_modifiedcat"]
+        self.run_shell_command(cmd)
         
-     
     def json_to_file(self, json_path, arrow_path):
         return self._run(arrow_path, json_path, 'JSON_TO_ARROW')
 
