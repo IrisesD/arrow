@@ -318,14 +318,22 @@ class IntegrationRunner(object):
         consumer.validate(json_path, consumer_file_path)
         
         if self.apitest:
-            if producer.name == 'Go' and consumer.name == 'Java':
-                producer.run_api(producer_file_path)
-                consumer.run_api(consumer_file_path)
-                print("Cat Producer File:")
-                producer.cat_file(producer_file_path+"_modified")
-                print("Cat Consumer File:")
-                producer.cat_file(consumer_file_path+"_modified")
-                consumer.check_equal(producer_file_path, consumer_file_path)
+            self._run_api_test(producer, consumer, producer_file_path, consumer_file_path)
+            
+    def _run_api_test(self, producer: Tester, consumer: Tester, producer_file_path: str, consumer_file_path: str):
+        producer.run_api(producer_file_path)
+        consumer.run_api(consumer_file_path)
+        producer.cat_file(producer_file_path+"_modified")
+        consumer.cat_file(consumer_file_path+"_modified")
+        cat_producer_file_path = producer_file_path+"_modified_cat"
+        cat_consumer_file_path = consumer_file_path+"_modified_cat"
+        consumer.check_equal(cat_producer_file_path, cat_consumer_file_path)
+        # if no error, remove the files
+        os.remove(producer_file_path+"_modified")
+        os.remove(consumer_file_path+"_modified")
+        os.remove(cat_producer_file_path)
+        os.remove(cat_consumer_file_path)
+        log("API test passed")
 
     def _run_gold(self,
                   gold_dir: str,
@@ -542,9 +550,9 @@ class IntegrationRunner(object):
         return outcome
 
 
-def get_static_json_files():
+def get_static_json_files(path: str):
     glob_pattern = os.path.join(ARROW_ROOT_DEFAULT,
-                                'integration', 'data', '*.json')
+                                path, '*.json')
     return [
         datagen.File(name=os.path.basename(p), path=p,
                      schema=None, batches=None)
@@ -579,13 +587,13 @@ def run_all_tests(with_cpp=True, with_java=True, with_js=True,
 
     if with_rust:
         testers.append(RustTester(**kwargs))
-
-    static_json_files = get_static_json_files()
+        
+    static_json_files = get_static_json_files(kwargs.get('static'))
     generated_json_files = datagen.get_generated_json_files(tempdir=tempdir)
     
     json_files = static_json_files
     # get static in kwargs
-    if kwargs.get('static') == False:
+    if kwargs.get('static') == None:
         json_files = json_files + generated_json_files
 
     # Additional integration test cases for Arrow Flight.

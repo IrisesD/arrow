@@ -146,7 +146,7 @@ public class Integration {
             // set column 0 of each record batch to [0,1,2,3,4,5,6,7,8,9]
             BufferAllocator allocator1 = new RootAllocator(Integer.MAX_VALUE);
             IntVector intVector = new IntVector("f1", allocator1);
-            intVector.allocateNew(10);
+            intVector.allocateNew(100);
             intVector.setValueCount(10);
             for (int i = 0; i < 10; i++) {
               intVector.set(i, i);

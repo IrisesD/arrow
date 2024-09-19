@@ -768,8 +768,8 @@ def _set_default(opt, default):
 @click.option('-k', '--match',
               help=("Substring for test names to include in run, "
                     "e.g. -k primitive"))
-@click.option('--static', is_flag=True, default=False, help="Run static tests only.")
-@click.option('--apitest', is_flag=True, default=False, help="Run API test only(available for Java).")
+@click.option('--static', default=None, help="Run static tests only.")
+@click.option('--apitest', is_flag=True, default=False, help="Run API tests.")
 def integration(with_all=False, random_seed=12345, **args):
     from .integration.runner import write_js_test_json, run_all_tests
     import numpy as np

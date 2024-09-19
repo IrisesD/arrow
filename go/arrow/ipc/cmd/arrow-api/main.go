@@ -156,9 +156,9 @@ func processFile(w io.Writer, fname string) error {
 		return err2
 	}
 	defer writeFile.Close()
-	fmt.Fprintf(w, "version: %v\n", r.Version())
+	//fmt.Fprintf(w, "version: %v\n", r.Version())
 	for i := 0; i < r.NumRecords(); i++ {
-		fmt.Fprintf(w, "record %d/%d...\n", i+1, r.NumRecords())
+		//fmt.Fprintf(w, "record %d/%d...\n", i+1, r.NumRecords())
 		rec, err := r.Record(i)
 		if err != nil {
 			return err
